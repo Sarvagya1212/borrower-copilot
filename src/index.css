@@ -1,0 +1,339 @@
+/*
+  Design plan (Borrower Copilot)
+  ------------------------------
+  Subject: a self-assessment tool for Indian borrowers who've often been
+  burned by predatory lending — the job is to feel like a calm, credible
+  ledger/passbook, not a flashy fintech sales screen.
+
+  Color: paper-sage background (not the cliché cream #F4F1EA), deep
+  teal-ink text (not pure/near-black), a deep emerald accent (evokes
+  Indian currency and passbook ink — not the common terracotta/neon
+  defaults), rust-red reserved ONLY for real warnings (bounce, don't-borrow),
+  a muted gold reserved ONLY for secured/collateral-related content.
+
+  Type: Fraunces (display/serif, for the verdict and headings — warm,
+  has real character) + Work Sans (body and all numbers, tabular figures
+  for ledger-style alignment). Two families, clearly distinct roles.
+
+  Layout: ledger rows with hairline dividers instead of shadowed cards.
+  Left-aligned throughout (financial-ledger convention, easiest to scan
+  on mobile) except the verdict and Negotiation Card title, which are
+  centered as deliberate "statement" moments — the one bold gesture per
+  screen, per the "spend your boldness in one place" principle.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #F4F5F1;
+  --surface: #FFFFFF;
+  --ink: #1B2A2E;
+  --muted: #5C6B6A;
+  --rule: #D8DCD3;
+  --accent: #0F5C4E;
+  --accent-soft: #E1EEE9;
+  --warn: #8A3324;
+  --warn-soft: #F3E6E1;
+  --gold: #8A6A22;
+  --gold-soft: #F1EAD7;
+
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Work Sans', -apple-system, 'Segoe UI', sans-serif;
+
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 0 1.1rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 500;
+  line-height: 1.15;
+  margin: 0 0 0.5rem;
+}
+
+h1 { font-size: 1.9rem; }
+h2 { font-size: 1.35rem; }
+h3 { font-size: 1.05rem; font-weight: 600; }
+
+p {
+  margin: 0 0 0.9rem;
+  max-width: 34rem;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* Ledger row: a label-left, value-right structural device, replacing
+   shadowed "SaaS cards" for all data display in this app. */
+.ledger {
+  border-top: 1px solid var(--rule);
+}
+.ledger-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.ledger-row .label {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.ledger-row .value {
+  text-align: right;
+  font-size: 1.05rem;
+}
+
+.rationale {
+  font-size: 0.92rem;
+  color: var(--muted);
+  margin: 0.35rem 0 1.1rem;
+  line-height: 1.5;
+}
+
+/* Confidence tag — plain sentence case, a colored dot carries the meaning,
+   never a tracked-out ALL-CAPS badge. */
+.confidence {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.confidence .dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  display: inline-block;
+}
+.confidence[data-level="high"] .dot { background: var(--accent); }
+.confidence[data-level="medium"] .dot { background: var(--gold); }
+.confidence[data-level="low"] .dot { background: var(--warn); }
+
+/* Section that carries a real signal: warning (bounce, don't-borrow) or
+   opportunity (secured alternative, good quote). Color is meaning, not
+   decoration — used sparingly. */
+.signal-block {
+  border: 1px solid var(--rule);
+  padding: 1rem 1.1rem;
+  margin: 1rem 0;
+}
+.signal-block.warn {
+  border-color: var(--warn);
+  background: var(--warn-soft);
+}
+.signal-block.opportunity {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.signal-block.gold {
+  border-color: var(--gold);
+  background: var(--gold-soft);
+}
+.signal-block h3 {
+  margin-top: 0;
+}
+
+button {
+  font-family: var(--body);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn-primary {
+  display: block;
+  width: 100%;
+  background: var(--ink);
+  color: var(--bg);
+  border: none;
+  padding: 0.9rem 1rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+}
+.btn-primary:active {
+  opacity: 0.85;
+}
+.btn-primary:disabled {
+  background: var(--rule);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  display: block;
+  width: 100%;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--rule);
+  padding: 0.8rem 1rem;
+  margin-top: 0.6rem;
+}
+
+.btn-choice {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  padding: 0.7rem 0.9rem;
+  text-align: left;
+  width: 100%;
+  margin-bottom: 0.55rem;
+  font-size: 0.98rem;
+}
+.btn-choice[data-selected="true"] {
+  border-color: var(--ink);
+  border-width: 2px;
+  font-weight: 600;
+}
+
+input[type="text"], input[type="number"] {
+  font-family: var(--body);
+  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums;
+  width: 100%;
+  padding: 0.75rem 0.8rem;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  color: var(--ink);
+}
+input:focus-visible, button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.field-label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0 0 0.35rem;
+}
+
+.helper-text {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 0.35rem;
+}
+
+/* Progress: a plain rule-based bar, not a rounded gradient pill — the
+   question flow genuinely is a sequence, so a step indicator is earned. */
+.progress-track {
+  height: 3px;
+  background: var(--rule);
+  margin-bottom: 0.5rem;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--ink);
+  transition: width 0.2s ease;
+}
+.progress-label {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 1.4rem;
+}
+
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 0 3rem;
+}
+
+.centered-statement {
+  text-align: center;
+}
+
+.eyebrow-plain {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 0.3rem;
+}
+
+/* Question card layout — minimal structure, just enough to space things. */
+.question-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.question-card h2 {
+  margin-bottom: 1.2rem;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.4rem;
+}
+
+/* Number input with ₹ prefix or % suffix */
+.number-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.number-input-wrapper input {
+  flex: 1;
+  border-radius: 0;
+}
+.input-affix {
+  font-family: var(--body);
+  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums;
+  padding: 0.75rem 0.6rem;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.input-affix.prefix {
+  border-right: none;
+}
+.input-affix.suffix {
+  border-left: none;
+}
+
+/* Stress scenario breach/pass indicators */
+.breach {
+  color: var(--warn);
+  font-weight: 600;
+}
+.pass {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
