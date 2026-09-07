@@ -41,5 +41,5 @@ The core domain logic is strictly decoupled from the UI.
 
 1. **The working app**: Run `npm run dev` as shown above.
 2. **RULES.md**: Included in the root directory.
-3. **Three run-throughs**: See `docs/Personas.md` (to be written in Phase 5).
-4. **Walkthrough**: See the final submission artifact.
+3. **Three run-throughs**: See `Personas.md`.
+4. **Walkthrough**: See `Walkthrough.md`.
